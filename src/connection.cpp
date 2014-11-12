@@ -70,7 +70,17 @@ void connection::handle_read(const boost::system::error_code& e,
 		  }
 
 		  auto self(shared_from_this());
-		  asyncRedis.connect("127.0.0.1",6379,[self,this](bool is,std::string msg){std::cout << msg << std::endl;on_req();});
+		  asyncRedis.connect("127.0.0.1",6379,[self,this](bool is,std::string msg)
+				  {
+			  	  	  if(is){
+
+			  	  		  std::cout << msg << std::endl;on_req();
+			  	  	  }else{
+			  	  		write_body(msg);
+			  	  	  }
+
+
+				  });
 
 		  //std::cout << "on_req(); "  << std::endl;
 
@@ -113,7 +123,7 @@ void connection::on_req()
 }
 void connection::write_body(std::string str)
 {
-	std::cout << "ssssssss" << str << "ssss" <<  std::endl;
+	std::cout << "ssssssss(" << str << ")ssss" <<  std::endl;
 
 	std::string header = "HTTP/1.1 200 OK\r\n";
 	header += "Server: hserver\r\n";
