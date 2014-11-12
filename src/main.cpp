@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
 	try {
 
-		http::server2::server s("0.0.0.0", "8888", "/home/houwei", 1);
+		http::server2::server s("0.0.0.0", "8888", "/home/houwei", 6);
 
 		s.run();
 	} catch (std::exception& e) {

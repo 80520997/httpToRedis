@@ -69,9 +69,10 @@ void connection::handle_read(const boost::system::error_code& e,
 			  //std::cout << iter->first <<"###" <<  iter->second << std::endl;
 		  }
 
-		  asyncRedis.connect("127.0.0.1",6379);
-		  on_req();
-		  std::cout << "on_req(); "  << std::endl;
+		  auto self(shared_from_this());
+		  asyncRedis.connect("127.0.0.1",6379,[self,this](bool is,std::string msg){std::cout << msg << std::endl;on_req();});
+
+		  //std::cout << "on_req(); "  << std::endl;
 
 
 	     }
@@ -136,6 +137,8 @@ void connection::handle_write(const boost::system::error_code& e)
     boost::system::error_code ignored_ec;
     socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_ec);
   }
+
+  std::cout << "connect end " << std::endl;
 
 
 }
